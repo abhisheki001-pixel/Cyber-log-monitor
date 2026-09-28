@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live Logs · CyberLog Monitor</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <header class="topnav">
+    <div class="topnav-left">
+      <button id="hamburgerBtn" class="hamburger" aria-label="Toggle menu">☰</button>
+      <div class="brand"><span class="brand-mark">CL</span><span>CyberLog Monitor</span></div>
+      <span class="system-status-pill"><span class="dot dot-ok"></span> Monitoring Active</span>
+    </div>
+    <div class="topnav-right">
+      <span id="lastUpdated" class="last-updated">Last updated: —</span>
+      <div class="dropdown">
+        <button id="notifBell" class="icon-btn" title="Notifications">🔔<span id="notifCount" class="notif-count">0</span></button>
+        <div id="notifPanel" class="dropdown-panel"><div class="dropdown-head">Notifications</div><div id="notifList"></div></div>
+      </div>
+      <button class="icon-btn" title="Profile">👤</button>
+      <button id="themeToggleBtn" class="icon-btn" title="Toggle theme">☾</button>
+      <button class="icon-btn" title="Logout">⎋</button>
+    </div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <ul class="nav-list">
+      <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span> Dashboard</a></li>
+      <li><a class="nav-link" href="logs.html"><span class="nav-icon">📜</span> Live Logs</a></li>
+      <li><a class="nav-link" href="alerts.html"><span class="nav-icon">🚨</span> Security Alerts</a></li>
+      <li><a class="nav-link" href="threats.html"><span class="nav-icon">🛡️</span> Threat Detection</a></li>
+      <li><a class="nav-link" href="ip-analysis.html"><span class="nav-icon">🌐</span> IP Analysis</a></li>
+      <li><a class="nav-link" href="users.html"><span class="nav-icon">👥</span> User Activity</a></li>
+      <li><a class="nav-link" href="reports.html"><span class="nav-icon">📄</span> Reports</a></li>
+      <li><a class="nav-link" href="system-health.html"><span class="nav-icon">💻</span> System Health</a></li>
+      <li><a class="nav-link" href="settings.html"><span class="nav-icon">⚙️</span> Settings</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="label">System Status</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Log Collector: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Detection Engine: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Database: Connected</div>
+      <div class="status-row"><span class="dot dot-ok"></span> API: Online</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <h1 class="page-title">Live Security Logs</h1>
+        <p class="page-subtitle">Streaming authentication and system events</p>
+      </div>
+      <div class="btn-group">
+        <button id="startBtn" class="btn btn-primary">▶ Start Monitoring</button>
+        <button id="pauseBtn" class="btn">⏸ Pause</button>
+        <button id="clearBtn" class="btn">🗑 Clear View</button>
+        <button id="exportBtn" class="btn">⭳ Export Logs</button>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <input id="searchInput" class="form-input" type="text" placeholder="Search logs…" />
+      <input id="ipFilter" class="form-input" type="text" placeholder="IP address" />
+      <input id="userFilter" class="form-input" type="text" placeholder="Username" />
+      <select id="severityFilter" class="form-select">
+        <option value="">All severities</option>
+        <option>INFO</option><option>MEDIUM</option><option>HIGH</option>
+      </select>
+      <select id="statusFilter" class="form-select">
+        <option value="">All statuses</option>
+        <option>SUCCESS</option><option>FAILED</option>
+      </select>
+      <button id="resetFiltersBtn" class="btn btn-sm">Reset Filters</button>
+    </div>
+
+    <div class="card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Timestamp</th><th>IP Address</th><th>Username</th><th>Event</th><th>Action</th><th>Status</th><th>Severity</th></tr>
+          </thead>
+          <tbody id="logsBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span id="pageInfo">Showing 0 of 0 logs</span>
+        <div class="btn-group">
+          <button id="prevPageBtn" class="btn btn-sm">‹ Prev</button>
+          <button id="nextPageBtn" class="btn btn-sm">Next ›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/logs.js"></script>
+</body>
+</html>

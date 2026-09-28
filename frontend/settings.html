@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings · CyberLog Monitor</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <header class="topnav">
+    <div class="topnav-left">
+      <button id="hamburgerBtn" class="hamburger" aria-label="Toggle menu">☰</button>
+      <div class="brand"><span class="brand-mark">CL</span><span>CyberLog Monitor</span></div>
+      <span class="system-status-pill"><span class="dot dot-ok"></span> Monitoring Active</span>
+    </div>
+    <div class="topnav-right">
+      <span id="lastUpdated" class="last-updated">Last updated: —</span>
+      <div class="dropdown">
+        <button id="notifBell" class="icon-btn" title="Notifications">🔔<span id="notifCount" class="notif-count">0</span></button>
+        <div id="notifPanel" class="dropdown-panel"><div class="dropdown-head">Notifications</div><div id="notifList"></div></div>
+      </div>
+      <button class="icon-btn" title="Profile">👤</button>
+      <button id="themeToggleBtn" class="icon-btn" title="Toggle theme">☾</button>
+      <button class="icon-btn" title="Logout">⎋</button>
+    </div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <ul class="nav-list">
+      <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span> Dashboard</a></li>
+      <li><a class="nav-link" href="logs.html"><span class="nav-icon">📜</span> Live Logs</a></li>
+      <li><a class="nav-link" href="alerts.html"><span class="nav-icon">🚨</span> Security Alerts</a></li>
+      <li><a class="nav-link" href="threats.html"><span class="nav-icon">🛡️</span> Threat Detection</a></li>
+      <li><a class="nav-link" href="ip-analysis.html"><span class="nav-icon">🌐</span> IP Analysis</a></li>
+      <li><a class="nav-link" href="users.html"><span class="nav-icon">👥</span> User Activity</a></li>
+      <li><a class="nav-link" href="reports.html"><span class="nav-icon">📄</span> Reports</a></li>
+      <li><a class="nav-link" href="system-health.html"><span class="nav-icon">💻</span> System Health</a></li>
+      <li><a class="nav-link" href="settings.html"><span class="nav-icon">⚙️</span> Settings</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="label">System Status</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Log Collector: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Detection Engine: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Database: Connected</div>
+      <div class="status-row"><span class="dot dot-ok"></span> API: Online</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Configure monitoring, detection and notification behaviour</p>
+      </div>
+      <button id="saveSettingsBtn" class="btn btn-primary">Save Changes</button>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-head"><h3>General Settings</h3></div>
+      <div class="settings-row">
+        <div><div class="st-label">System name</div><div class="st-desc">Shown in the top navigation bar</div></div>
+        <input class="form-input" type="text" value="CyberLog Monitor" />
+      </div>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-head"><h3>Monitoring Settings</h3></div>
+      <div class="settings-row">
+        <div><div class="st-label">Log monitoring</div><div class="st-desc">Collect events from configured sources</div></div>
+        <label class="toggle"><input type="checkbox" checked /><span class="toggle-track"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><div class="st-label">Real-time monitoring</div><div class="st-desc">Stream new events as they arrive</div></div>
+        <label class="toggle"><input type="checkbox" checked /><span class="toggle-track"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><div class="st-label">Refresh interval</div><div class="st-desc">How often the dashboard polls for new data</div></div>
+        <select class="form-select"><option>5 seconds</option><option>10 seconds</option><option>30 seconds</option></select>
+      </div>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-head"><h3>Detection Settings</h3></div>
+      <div class="settings-row">
+        <div><div class="st-label">Failed login threshold</div><div class="st-desc">Attempts before a brute-force alert fires</div></div>
+        <input class="form-input" style="max-width:100px;" type="number" value="5" />
+      </div>
+      <div class="settings-row">
+        <div><div class="st-label">Time window</div><div class="st-desc">Window used for the threshold above</div></div>
+        <input class="form-input" style="max-width:120px;" type="text" value="60 seconds" />
+      </div>
+      <div class="settings-row">
+        <div><div class="st-label">Alert retention</div><div class="st-desc">How long resolved alerts are kept</div></div>
+        <input class="form-input" style="max-width:100px;" type="text" value="30 days" />
+      </div>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-head"><h3>Notification Settings</h3></div>
+      <div class="settings-row">
+        <div><div class="st-label">Email notifications</div><div class="st-desc">Send a summary email for new alerts</div></div>
+        <label class="toggle"><input type="checkbox" checked /><span class="toggle-track"></span></label>
+      </div>
+      <div class="settings-row">
+        <div><div class="st-label">Critical alerts only</div><div class="st-desc">Only notify for CRITICAL severity</div></div>
+        <label class="toggle"><input type="checkbox" /><span class="toggle-track"></span></label>
+      </div>
+    </div>
+
+    <div class="card settings-section">
+      <div class="card-head"><h3>Database Settings</h3></div>
+      <div class="settings-row">
+        <div><div class="st-label">Database</div><div class="st-desc">Connected via the Flask backend (read-only here)</div></div>
+        <span class="status-pill status-online">● Connected — SQLite</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

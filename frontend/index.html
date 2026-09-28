@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · CyberLog Monitor</title>
+<link rel="stylesheet" href="css/style.css" />
+<!-- Chart.js from CDN — used for the two charts on this page -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ TOP NAVIGATION BAR ============ -->
+  <header class="topnav">
+    <div class="topnav-left">
+      <button id="hamburgerBtn" class="hamburger" aria-label="Toggle menu">☰</button>
+      <div class="brand">
+        <span class="brand-mark">CL</span>
+        <span>CyberLog Monitor</span>
+      </div>
+      <span class="system-status-pill"><span class="dot dot-ok"></span> Monitoring Active</span>
+    </div>
+    <div class="topnav-right">
+      <span id="lastUpdated" class="last-updated">Last updated: —</span>
+      <div class="dropdown">
+        <button id="notifBell" class="icon-btn" title="Notifications">🔔<span id="notifCount" class="notif-count">0</span></button>
+        <div id="notifPanel" class="dropdown-panel">
+          <div class="dropdown-head">Notifications</div>
+          <div id="notifList"></div>
+        </div>
+      </div>
+      <button class="icon-btn" title="Profile">👤</button>
+      <button id="themeToggleBtn" class="icon-btn" title="Toggle theme">☾</button>
+      <button class="icon-btn" title="Logout">⎋</button>
+    </div>
+  </header>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <ul class="nav-list">
+      <li><a class="nav-link" href="index.html"><span class="nav-icon">🏠</span> Dashboard</a></li>
+      <li><a class="nav-link" href="logs.html"><span class="nav-icon">📜</span> Live Logs</a></li>
+      <li><a class="nav-link" href="alerts.html"><span class="nav-icon">🚨</span> Security Alerts</a></li>
+      <li><a class="nav-link" href="threats.html"><span class="nav-icon">🛡️</span> Threat Detection</a></li>
+      <li><a class="nav-link" href="ip-analysis.html"><span class="nav-icon">🌐</span> IP Analysis</a></li>
+      <li><a class="nav-link" href="users.html"><span class="nav-icon">👥</span> User Activity</a></li>
+      <li><a class="nav-link" href="reports.html"><span class="nav-icon">📄</span> Reports</a></li>
+      <li><a class="nav-link" href="system-health.html"><span class="nav-icon">💻</span> System Health</a></li>
+      <li><a class="nav-link" href="settings.html"><span class="nav-icon">⚙️</span> Settings</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="label">System Status</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Log Collector: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Detection Engine: Online</div>
+      <div class="status-row"><span class="dot dot-ok"></span> Database: Connected</div>
+      <div class="status-row"><span class="dot dot-ok"></span> API: Online</div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <h1 class="page-title">Security Overview</h1>
+        <p class="page-subtitle">Real-time monitoring and threat detection</p>
+      </div>
+      <button id="refreshBtn" class="btn btn-primary">↻ Refresh Data</button>
+    </div>
+
+    <!-- Summary cards, filled in by dashboard.js -->
+    <div class="stat-grid" id="statGrid"></div>
+
+    <!-- Charts -->
+    <div class="chart-row">
+      <div class="card">
+        <div class="card-head">
+          <h3>Security Events Over Time</h3>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-primary" data-range="24h">24 Hours</button>
+            <button class="btn btn-sm" data-range="7d">7 Days</button>
+            <button class="btn btn-sm" data-range="30d">30 Days</button>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="eventsChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Threat Severity</h3></div>
+        <div class="chart-wrap"><canvas id="severityChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Recent alerts table -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Recent Security Alerts</h3>
+        <a href="alerts.html" class="btn btn-sm">View all</a>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Alert ID</th><th>Time</th><th>Severity</th><th>Alert Type</th>
+              <th>Source IP</th><th>Username</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="recentAlertsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ ALERT DETAILS MODAL (shared with alerts.html) ============ -->
+<div class="modal-backdrop" id="alertModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalAlertType">Alert</h3>
+      <button class="close-btn" onclick="closeAlertModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div><div class="k">Severity</div><div class="v" id="modalSeverity"></div></div>
+        <div><div class="k">Status</div><div class="v" id="modalStatus"></div></div>
+        <div><div class="k">Timestamp</div><div class="v" id="modalTimestamp"></div></div>
+        <div><div class="k">Event Count</div><div class="v" id="modalEventCount"></div></div>
+        <div><div class="k">Source IP</div><div class="v mono" id="modalSourceIp"></div></div>
+        <div><div class="k">Destination</div><div class="v mono" id="modalDestination"></div></div>
+        <div><div class="k">Username</div><div class="v" id="modalUsername"></div></div>
+        <div><div class="k">Detection Rule</div><div class="v" id="modalRule"></div></div>
+      </div>
+      <div class="k" style="margin-bottom:6px;">Description</div>
+      <p id="modalDescription" style="margin:0 0 16px; font-size:13.5px; color:var(--text-mid);"></p>
+      <div class="k" style="margin-bottom:8px;">Timeline</div>
+      <ul class="timeline" id="modalTimeline"></ul>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="updateAlertStatus('Investigating')">Acknowledge</button>
+      <button class="btn" onclick="updateAlertStatus('Investigating')">Mark Investigating</button>
+      <button class="btn btn-primary" onclick="updateAlertStatus('Resolved')">Resolve</button>
+      <button class="btn" onclick="closeAlertModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
